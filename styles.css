@@ -211,6 +211,20 @@ body {
 }
 .integration-chip:hover { border-color: color-mix(in srgb, var(--accent) 25%, transparent); transform: translateY(-1px); }
 
+/* Contact */
+.contact-section {
+  margin-top: 16px; padding: 36px; background: var(--surface);
+  border: 1px solid rgba(0,0,0,0.06); border-radius: var(--radius-lg);
+}
+.contact-desc { font-size: 14px; color: var(--muted); margin-bottom: 20px; line-height: 1.6; }
+.contact-form { display: flex; gap: 10px; flex-wrap: wrap; }
+.contact-input {
+  flex: 1; min-width: 200px; padding: 11px 16px; border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.12); background: white; font-size: 13px;
+  font-family: inherit; outline: none; transition: border-color 0.2s;
+}
+.contact-input:focus { border-color: var(--accent); }
+
 /* CTA */
 .cta-section { margin-top: 16px; }
 .cta-inner {
