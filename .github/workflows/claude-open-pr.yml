@@ -20,7 +20,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const body = context.payload.comment.body || '';
-            const match = body.match(/\[Create PR[^\]]*\]\((https:\/\/github\.com\/\/\/compare\/main\.\.\.([^?\)]+))/);
+            const match = body.match(/\[Create PR[^\]]*\]\((https:\/\/github\.com\/[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+\/compare\/main\.\.\.([^?\)]+))/);
             if (!match) {
               core.setFailed('Could not find Claude compare link in comment.');
               return;
@@ -31,11 +31,11 @@ jobs:
             const existing = await github.rest.pulls.list({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              head: ${context.repo.owner}:,
+              head: `${context.repo.owner}:${head}`,
               state: 'open',
             });
             if (existing.data.length > 0) {
-              core.info(PR already exists for : #);
+              core.info(`PR already exists for ${head}: #${existing.data[0].number}`);
               return;
             }
             const issue = await github.rest.issues.get({
@@ -48,7 +48,7 @@ jobs:
               repo: context.repo.repo,
               head,
               base: 'main',
-              title: eat:  (issue #),
-              body: Closes #\n\nAuto-opened from Claude completion comment.\n\nSource: ,
+              title: `feat: ${issue.data.title} (issue #${issueNumber})`,
+              body: `Closes #${issueNumber}\n\nAuto-opened from Claude completion comment.\n\nSource: ${compareUrl}`,
             });
-            core.info(Created PR #);
+            core.info(`Created PR #${pr.data.number}`);
